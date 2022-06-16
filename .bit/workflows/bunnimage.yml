@@ -1,0 +1,71 @@
+name: Bunnimage
+on:
+  push:
+    branches:
+      - bunnimage
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node Environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: |
+          npm install minimist
+          npm install node-fetch
+          
+      - name: Get Count
+        id: vars
+        run: echo ::set-output name=count::$(node ./.bit/scripts/getProgress.js --repo=${{github.event.repository.name}} --owner=${{github.repository_owner}} )
+
+      - name: Step 33
+        if: ${{steps.vars.outputs.count == 33 && github.event.head_commit.message != 'Update progress'}}
+        env:
+          storage_account_connection_string: ${{ secrets.storage_account_connection_string }}
+          container_name: ${{ secrets.container_name }}
+        run: |
+          npm install @azure/storage-blob
+          node .bit/tests/test.3.1.js --repo=${{github.event.repository.name}} --user=${{github.repository_owner}}
+      - name: Step 35
+        if: ${{steps.vars.outputs.count == 35 && github.event.head_commit.message != 'Update progress'}}
+        env:
+          BUNNIMAGE_ENDPOINT: ${{ secrets.BUNNIMAGE_ENDPOINT }}
+          container_name: ${{ secrets.container_name }}
+          blob_url: ${{ secrets.blob_url }}
+        run: |
+          npm install node-fetch
+          npm install form-data
+          node .bit/tests/test.3.2.js --repo=${{github.event.repository.name}} --user=${{github.repository_owner}}
+      - name: Step 37
+        if: ${{steps.vars.outputs.count == 37 && github.event.head_commit.message != 'Update progress'}}
+        env:
+          BUNNIMAGE_ENDPOINT: ${{ secrets.BUNNIMAGE_ENDPOINT }}
+          container_name: ${{ secrets.container_name }}
+          blob_url: ${{ secrets.blob_url }}
+        run: |
+          npm install node-fetch
+          npm install form-data
+          node .bit/tests/test.3.3.js --repo=${{github.event.repository.name}} --user=${{github.repository_owner}}
+      - name: Step 41
+        if: ${{steps.vars.outputs.count == 41 && github.event.head_commit.message != 'Update progress'}}
+        env:
+          BUNNIMAGE_ENDPOINT: ${{ secrets.BUNNIMAGE_ENDPOINT }}
+          BUNNIMAGE_ENDPOINT2: ${{ secrets.BUNNIMAGE_ENDPOINT2 }}
+          container_name: ${{ secrets.container_name }}
+          blob_url: ${{ secrets.blob_url }}
+        run: |
+          npm install node-fetch
+          npm install form-data
+          node .bit/tests/test.3.5.js --repo=${{github.event.repository.name}} --user=${{github.repository_owner}}
+      - name: Check for branch
+        if: ${{steps.vars.outputs.count > 42 && github.event.head_commit.message != 'Update progress'}}
+        run: |
+          node .bit/tests/wrongbranch.js
