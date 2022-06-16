@@ -1,6 +1,6 @@
 # [Replace this with your project title]
 
-## About Me
+## Hello! My name is Sania Khaja and I am a rising sophomore studying Computer Science at the University of Illinois at Chicago. Currently, I am 19.
 
 ## The Premise
 
