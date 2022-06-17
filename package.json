@@ -1,14 +1,25 @@
 {
   "name": "intro-to-serverless",
   "version": "1.0.0",
-  "description": "",
+  "description": "![Newsletter](https://user-images.githubusercontent.com/69332964/114803220-14269100-9d6d-11eb-9a3a-e92a637e5d79.png)",
   "scripts": {
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
     "cypress": "^8.2.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.2"
   },
-  "devDependencies": {}
+  "main": "helloworld.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saniazkhaja/Intro-To-Serverless.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saniazkhaja/Intro-To-Serverless/issues"
+  },
+  "homepage": "https://github.com/saniazkhaja/Intro-To-Serverless#readme"
 }
