@@ -5,9 +5,17 @@ module.exports = async function (context, req) {
     var password = req.query.password;
     context.log(password);
 
+    let result = "";
+
+    if (password == "letmein") {
+        result = "Access granted.";
+    } else {
+        result = "Access denied.";
+    }
+
     context.res = {
         // status: 200, /* Defaults to 200 */
-        body: password
+        body: result
     };
 
     // const name = (req.query.name || (req.body && req.body.name));
