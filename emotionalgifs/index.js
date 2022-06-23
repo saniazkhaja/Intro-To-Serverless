@@ -38,12 +38,12 @@ async function analyzeImage(img){
     // const subscriptionKey = process.env.SUBSCRIPTIONKEY;
     // const uriBase = process.env.ENDPOINT + '/face/v1.0/detect';
 
-    const subscriptionKey = '50cd864af0074326a37150ed20a9e431';
-    const uriBase = 'https://saniasfaceapi.cognitiveservices.azure.com' + '/face/v1.0/detect';
+    const subscriptionKey = '2b46dc89f4624d6ba01b0b629dd94ad0';
+    const uriBase = 'https://placeholdeer-face-api.cognitiveservices.azure.com' + '/face/v1.0/detect';
 
     let params = new URLSearchParams({
         'returnFaceId': 'true',
-        'returnFaceAttributes': 'blur'     //FILL IN THIS LINE
+        'returnFaceAttributes': 'emotion'     //FILL IN THIS LINE
     })
 
     let resp = await fetch(uriBase + '?' + params.toString(), {
