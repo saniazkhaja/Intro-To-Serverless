@@ -58,8 +58,3 @@ async function analyzeImage(img){
     
     return data; 
 }
-
-// 50cd864af0074326a37150ed20a9e431
-// https://saniasfaceapi.cognitiveservices.azure.com/
-
-// process.env.varName
