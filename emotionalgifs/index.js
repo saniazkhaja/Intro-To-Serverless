@@ -30,10 +30,14 @@ const parts = multipart.Parse(body, boundary);
     let objects = Object.values(emotions);
     const main_emotion = Object.keys(emotions).find(key => emotions[key] === Math.max(...objects));
 
+    const API_KEY = prcoess.env.GIFKEY;
+    // const resp = await fetch("https://api.giphy.com/v1/gifs/translate?api_key=3UCm45h6S6HxyEY3yAY4eg6gNOeuUaAY&limit=1&s=" + main_emotion)
+    const resp = await fetch("https://api.giphy.com/v1/gifs/translate?api_key=" + API_KEY + "&limit=1&s=" + main_emotion);
+    const jsonData = await resp.json()
+    console.log(jsonData);
+
     context.res = {
-        body: {
-            main_emotion
-        }
+        body: jsonData.data.url
     };
     console.log(result)
     context.done(); 
