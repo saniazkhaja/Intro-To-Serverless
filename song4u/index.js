@@ -50,6 +50,7 @@ module.exports = async function (context, req) {
     };
 }
 
+
 async function analyzeImage(img, context){
     const KEY = process.env["FACE_API_KEY"];
     const URI_BASE = process.env["FACE_API_URI"] + "/face/v1.0/detect";
@@ -67,7 +68,7 @@ async function analyzeImage(img, context){
         // img is the parameter inputted
         headers: {
             'Content-Type' : 'application/octet-stream',
-            // HOW DO YOU AUTHENTICATE?
+            // Auethtucates
             "Ocp-Apim-Subscription-Key" : KEY,
         }
     })
