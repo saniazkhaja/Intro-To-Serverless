@@ -7,13 +7,13 @@ module.exports = async function (context, req) {
     const queryObject = querystring.parse(req.body);
     const url = queryObject.MediaUrl0;
 
-    const resp = fetch(url, {
+    const resp = await fetch(url, {
         method: "GET",
     })
 
     const data = await resp.arrayBuffer();
 
-    const result = await analyzeImage(data, context);
+    const result = await analyzeImage(data);
 
     const age = result[0].faceAttributes.age;
 
