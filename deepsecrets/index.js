@@ -58,7 +58,6 @@ const config = {
     .fetchAll();
 
     const { resource: createdItem } = await container.items.create(newItem);
-
     return items;
   }
   
