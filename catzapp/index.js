@@ -7,7 +7,6 @@ button.addEventListener("click", async function() {
     //     let cat = document.getElementById("name").value;
     //     document.getElementById("image").src = "https://cataas.com/cat/says/" + cat;
     // }
-    
     const name1 = document.getElementById("name1").value;
     const name2 = document.getElementById("name2").value;
     const name3 = document.getElementById("name3").value;
