@@ -23,7 +23,7 @@ If time permits, will incorparoate weather info into leaving time calculations
 APIs:
 - Google Calander API - User API Key
 - Traffic API (Google Maps) - Application API Key
-- Gmail API - send user email when to leave home
+- Gmail API - send user email when to leave home (Courier)
 - (time permits) Weather API - Application API Key
 
 Will Utilize:

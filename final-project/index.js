@@ -1,4 +1,18 @@
-// for final project
+const userGmail = document.getElementById("userGmail").value;
+const userLocation = document.getElementById("userLocation").value;
+const userParkingTime = document.getElementById("userParkingTime").value;
+const userNotificationTime = document.getElementById(" userNotificationTime").value;
+const userSubmitButton = document.getElementById("userSubmitButton").value;
+
+button.addEventListener("click", async function() {
+    userGmail = document.getElementById("userGmail").value;
+    userLocation = document.getElementById("userLocation").value;
+    userParkingTime = document.getElementById("userParkingTime").value;
+    userNotificationTime = document.getElementById(" userNotificationTime").value;
+    userSubmitButton = document.getElementById("userSubmitButton").value;
+})
+
+
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* header style */
+    .header {
+      padding: 1px;
+      text-align: center;
+      background: rgb(107, 196, 255);
+      color: rgb(0, 17, 255);
+      font-size: 25px;
+    } 
+
+    .userInput {
+      padding: 10px;
+      text-align: left;
+      background: rgb(256, 256, 256);
+      color: rgb(0, 0, 0);
+      font-size: 20px;
+    } 
+
+    .submitButton {
+      padding: 5px;
+      text-align: center;
+      background: rgb(107, 196, 255);
+      color: rgb(0, 17, 255);
+      font-size: 25px;
+    }
+
+    .submitButton:hover {
+      background-color: #ffffff;
+    }
+
+    input[type=text] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+    }
+
+    </style>
+</head>
+<body>
+    <div class ="header"> 
+        <h1>When To Leave For An Event: User Info</h1>
+    </div>
+
+    <div class = "userInput">
+        <form>
+            <br />
+            <label>Gmail Email</label> <br />
+            <input type="text" id="userGmail" placeholder="Gmail"></input>
+            <br />
+            <br />
+            <label>Location You Leave From (Street Name and Number, Town, State with Zip Code)</label> 
+            <br />
+            <input type="text" id="userLocation" placeholder="Location"></input>
+            <br />
+            <br />
+            <label>Amount Of Time To Leave For Parking (in minutes)</label> 
+            <br />
+            <input type="text" id="userParkingTime" placeholder="Parking Time"></input>
+            <br />
+            <br />
+            <label>How Many Minutes Do You Want To Be Notified in Advance? (Will automatically notify 5 minutes before)</label> 
+            <input type="text" id="userNotificationTime" placeholder="Notification Time"></input>
+            <br />
+            <br />
+            <br />
+        </form>
+        <button class=submitButton id="userSubmitButton">Submit</button>
+    </div>
+    
+    <script src="./index.js"></script>
+</body>
+</html>
