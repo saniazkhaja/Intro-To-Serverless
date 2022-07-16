@@ -14,6 +14,14 @@
       "type": "http",
       "direction": "out",
       "name": "res"
+    }, 
+    {
+      "name": "secrets",
+      "type": "cosmosDB",
+      "databaseName": "SecretsStorer",
+      "collectionName": "secrets",
+      "connectionStringSetting": "saniabitproject2022_DOCUMENTDB",
+      "direction": "in"
     }
   ]
 }
