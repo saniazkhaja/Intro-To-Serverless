@@ -14,14 +14,14 @@
       "type": "http",
       "direction": "out",
       "name": "res"
-    }, 
+    },
     {
-      "name": "secrets",
       "type": "cosmosDB",
-      "databaseName": "SecretsStorer",
-      "collectionName": "secrets",
-      "connectionStringSetting": "saniabitproject2022_DOCUMENTDB",
-      "direction": "in"
+      "direction": "out",
+      "name": "secrets",
+      "databaseName": "saniabitproject2022",
+      "collectionName": "SecretStorer",
+      "connectionStringSetting": "AccountEndpoint=https://saniabitproject2022.documents.azure.com:443/;AccountKey=he9zfpynIgyTsxYlYws2M4IrF9pt9LG3gJqWBQk5h48pCTkTFvZpyZZDERiWkADDdbT9KvUL6uLKX64HVI7gRg==;"
     }
   ]
 }
