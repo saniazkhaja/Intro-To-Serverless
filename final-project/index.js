@@ -76,9 +76,15 @@ module.exports = async function (context, req) {
 
 
     const queryObject = qs.parse(req.body);
-    context.log(queryObject);
+    console.log(queryObject);
     let message = queryObject.Body; // this is the user's input
-    let document = {"message": message} // create an object with the string `"message"` as the key, and the variable `message` as its value
+    let document = {"message": message}
+    // let document = {"userGmail": queryObject.Body.userGmail, 
+    //                 "userLocationLat": queryObject.Body.userLocationLat,
+    //                 "userLocationLong": queryObject.Body.userLocationLong,
+    //                 "userParkingTime": queryObject.Body.userParkingTime,
+    //                 "userNotificationTime": queryObject.Body.userNotificationTime,
+    //              } // create an object with the string `"message"` as the key, and the variable `message` as its value
     // const newItem = {
     //     id: "3",
     //     category: "fun",
