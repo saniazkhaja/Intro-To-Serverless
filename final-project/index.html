@@ -50,30 +50,30 @@
     </div>
 
     <div class = "userInput">
-        <form method="post" action="https://bitprojectweek1.azurewebsites.net/api/final-project?">
+        <form>
             <br />
             <label>Gmail Email</label> <br />
-            <input type="text" id="userGmail" placeholder="Gmail"></input>
+            <input type="text" id="userGmail" placeholder="Gmail" required="required"></input>
             <br />
             <br />
             <label>Location You Leave From (Street Name and Number, Town, State with Zip Code)</label> <br />
             <a href="https://www.latlong.net/convert-address-to-lat-long.html">Click To Find Out Latitude and Longitude of Location</a>
             <br />
-            <input type="text" id="userLocationLat" placeholder="Latitude"></input>
-            <input type="text" id="userLocationLong" placeholder="Longitude"></input>
+            <input type="text" id="userLocationLat" placeholder="Latitude" required="required"></input>
+            <input type="text" id="userLocationLong" placeholder="Longitude" required="required"></input>
             <br />
             <br />
             <label>Amount Of Time To Leave For Parking (in minutes)</label> 
             <br />
-            <input type="text" id="userParkingTime" placeholder="Parking Time"></input>
+            <input type="text" id="userParkingTime" placeholder="Parking Time" required="required"></input>
             <br />
             <br />
             <label>How Many Minutes Do You Want To Be Notified in Advance? (Will automatically notify 5 minutes before)</label> 
-            <input type="text" id="userNotificationTime" placeholder="Notification Time"></input>
+            <input type="text" id="userNotificationTime" placeholder="Notification Time" required="required"></input>
             <br />
             <br />
             <br />
-            <button class=submitButton id="userSubmitButton">Submit</button>
+            <button type="button" class=submitButton id="userSubmitButton">Submit</button>
         </form>
     </div>
     

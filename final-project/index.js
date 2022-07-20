@@ -3,8 +3,8 @@ const qs = require('qs');
 const CosmosClient = require("@azure/cosmos").CosmosClient;
 
 const config = {
-    endpoint: process.env.COSMOS_ENDPOINT,
-    key: process.env.COSMOS_KEY,
+    endpoint: process.env["COSMOS_ENDPOINT"],
+    key: process.env["COSMOS_KEY"],
     databaseId: "SecretStorer",
     containerId: "secrets",
     partitionKey: {kind: "Hash", paths: ["/secrets"]}
@@ -75,27 +75,22 @@ module.exports = async function (context, req) {
     //     : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
 
 
-    const queryObject = qs.parse(req.body);
-    console.log(queryObject);
-    let message = queryObject.Body; // this is the user's input
-    let document = {"message": message}
-    // let document = {"userGmail": queryObject.Body.userGmail, 
-    //                 "userLocationLat": queryObject.Body.userLocationLat,
-    //                 "userLocationLong": queryObject.Body.userLocationLong,
-    //                 "userParkingTime": queryObject.Body.userParkingTime,
-    //                 "userNotificationTime": queryObject.Body.userNotificationTime,
-    //              } // create an object with the string `"message"` as the key, and the variable `message` as its value
-    // const newItem = {
-    //     id: "3",
-    //     category: "fun",
-    //     name: "Cosmos DB",
-    //     description: "Complete Cosmos DB Node.js Quickstart ⚡",
-    //     isComplete: false
-    //   };
+    // const queryObject = JSON.parse(req.body);
+    // console.log(queryObject);
+    const data = req.body; // this is the user's input
+    // let document = {"message": message}
+    let document = {"userGmail": data.userGmail, 
+                    "userLocationLat": data.userLocationLat,
+                    "userLocationLong": data.userLocationLong,
+                    "userParkingTime": data.userParkingTime,
+                    "userNotificationTime": data.userNotificationTime,
+                    } // create an object with the string `"message"` as the key, and the variable `message` as its value
+    
     let items = await createDocument(document)// call the createDocument function with the document we just made
-    let random_value = Math.floor(items.length * Math.random());
+    //let random_value = Math.floor(items.length * Math.random());
 
-    const responseMessage = `Thanks 😊! Stored your secret "${message}". 😯 Someone confessed that: ${JSON.stringify(items[random_value].message)}`
+    const responseMessage = `Thanks 😊! Stored your info "${data.userGmail}"`
+    context.log(responseMessage);
     context.res = {
         body: responseMessage
      };

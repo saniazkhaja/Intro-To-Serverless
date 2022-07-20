@@ -1,18 +1,36 @@
-let userGmail = document.getElementById("userGmail").value;
-let userLocationLat = document.getElementById("userLocationLat").value;
-let userLocationLong = document.getElementById("userLocationLong").value;
-let userParkingTime = document.getElementById("userParkingTime").value;
-let userNotificationTime = document.getElementById("userNotificationTime").value;
+// let userGmail = document.getElementById("userGmail").value;
+// let userLocationLat = document.getElementById("userLocationLat").value;
+// let userLocationLong = document.getElementById("userLocationLong").value;
+// let userParkingTime = document.getElementById("userParkingTime").value;
+// let userNotificationTime = document.getElementById("userNotificationTime").value;
 const userSubmitButton = document.getElementById("userSubmitButton");
 
 userSubmitButton.addEventListener("click", async function() {
-    userGmail = document.getElementById("userGmail").value;
-    userLocation = document.getElementById("userLocationLat").value;
-    userLocation = document.getElementById("userLocationLong").value;
-    userParkingTime = document.getElementById("userParkingTime").value;
-    userNotificationTime = document.getElementById("userNotificationTime").value;
+    let userGmail = document.getElementById("userGmail").value;
+    let userLocationLat = document.getElementById("userLocationLat").value;
+    let userLocationLong = document.getElementById("userLocationLong").value;
+    let userParkingTime = document.getElementById("userParkingTime").value;
+    let userNotificationTime = document.getElementById("userNotificationTime").value;
 
     console.log("email:", userGmail);
+
+    fetch("http://localhost:7071/api/final-project",
+    {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: JSON.stringify({
+                        "userGmail": userGmail,
+                        "userLocationLat": userLocationLat,
+                        "userLocationLong": userLocationLong,
+                        "userParkingTime": userParkingTime,
+                        "userNotificationTime": userNotificationTime
+                        })
+})
+.then(function(res){ console.log(res) })
+.catch(function(res){ console.log(res) })
 });
 
 //https://jurgenonazure.com/2020/05/post-html-forms-to-cosmos-db-with-azure-functions-for-free/
