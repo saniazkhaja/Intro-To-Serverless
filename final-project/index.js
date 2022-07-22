@@ -89,7 +89,7 @@ module.exports = async function (context, req) {
     let items = await createDocument(document)// call the createDocument function with the document we just made
     //let random_value = Math.floor(items.length * Math.random());
 
-    const responseMessage = `Thanks 😊! Stored your info "${data.userGmail}"`
+    const responseMessage = `Thanks 😊! Stored your info "${JSON.stringify(data.userGmail)}"`
     context.log(responseMessage);
     context.res = {
         body: responseMessage

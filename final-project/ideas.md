@@ -23,14 +23,14 @@ If time permits, will incorparoate weather info into leaving time calculations
 APIs:
 - Google Calander API - User API Key
 - Traffic API (Google Maps) - Application API Key
-- Gmail API - send user email when to leave home (Courier)
+- SendGrid Azure
 - (time permits) Weather API - Application API Key
 
 Will Utilize:
 - VS Code
 - Azure Function
 - Javascript/HTML
-- Gmail API
+- SendGrid Azure
 - APIs above
 - Need API endPoints can have mutliple endpoints (Azure functions)
 - CosmosDB
@@ -59,7 +59,7 @@ How to Start:
 2. Get the Google Calender aspect to work. User has to be able to sign into their google calender and I have to be able to access that data. Will have to work with Google Calender API
 3. Import google maps API to use for calculation of when to leave home
 4. Check to see if destination location exists and if so then calculate time to leave based on current traffic (will need current time and destination name)
-5. Send user when to leave info through email
+5. Send user when to leave info through email using SendGrid
 
 If Time permits:
  - import weather API and use for calculations
