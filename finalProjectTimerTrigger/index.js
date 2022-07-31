@@ -30,7 +30,7 @@ async function create(client, databaseId, containerId) {
 
 
 // used to get items based on the user's email
-async function getItems(email) {
+async function getAllItems(email) {
   const { endpoint, key, databaseId, containerId } = config;
   const client = new CosmosClient({ endpoint, key });
   const database = client.database(databaseId);
@@ -41,10 +41,7 @@ async function getItems(email) {
 
   // query to return all items based on the email parameter
   const querySpec = {
-    query: "SELECT * from c where c.userEmail = @email",
-    "parameters": [
-        {"name": "@email", "value": email},
-    ]
+    query: "SELECT * from c",
   };
 
   // read all items in the Items container
@@ -57,20 +54,11 @@ async function getItems(email) {
 }
 
 
-// used to read database, see when to leave based on Azure Maps API data and send email to user  
-module.exports = async function (context, myTimer) {
-  var timeStamp = new Date().toISOString();
-  
-  if (myTimer.isPastDue)
-  {
-      context.log('JavaScript is running late!');
-  }
-  context.log('JavaScript timer trigger function ran!', timeStamp);  
-    
-   
-    
-    
-  await fetch('https://atlas.microsoft.com/route/directions/json?api-version=1.0&query=47.591180,-122.332700:45.591180,-122.332700&subscription-key=' + process.env["AZURE_MAPS_API_KEY"], {
+async function getLeaveTime(userCurrentLat, userCurrentLong, userLocationLat, userLocationLong, userEventDateTime, userParkingTime) {
+  let departure = 0;
+  let arrival = 0;
+  let calculatedLeaveTime = 0;
+  await fetch('https://atlas.microsoft.com/route/directions/json?api-version=1.0&query='+userCurrentLat+','+userCurrentLong+':'+userLocationLat+','+userLocationLong+'&subscription-key='+process.env["AZURE_MAPS_API_KEY"], {
     method: 'GET',
     redirect: 'follow',
     headers: {
@@ -80,8 +68,8 @@ module.exports = async function (context, myTimer) {
   })  
     .then((response) => response.json())
     .then((theMapData) => {
-      let departure = theMapData.routes[0].summary.departureTime;
-      let arrival = theMapData.routes[0].summary.arrivalTime;
+      departure = theMapData.routes[0].summary.departureTime;
+      arrival = theMapData.routes[0].summary.arrivalTime;
 
       context.log(departure);
       context.log(arrival);
@@ -89,61 +77,62 @@ module.exports = async function (context, myTimer) {
       console.error('Error:', error.message);
   });
 
-   // let items = await getItems();
-   // context.log(JSON.stringify(items));
+  // return calculatedLeaveTime;
+  return departure;
+}
+
+
+// used to send an email to user to notify when to leave through SendGrid
+function sendEmail(userEmail, leaveTime, arriveTime) {
+  const sgMail = require('@sendgrid/mail')
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  const msg = {
+    to: userEmail, // Change to your recipient
+    from: 'saniazkhaja@gmail.com', // Change to your verified sender
+    subject: 'Time To Leave For Your Event Soon',
+    text: 'You will want to leave by' + leaveTime,
+    html: '<strong>to reach your event at</strong>' + arriveTime,
+  }
+  sgMail
+  .send(msg)
+  .then(() => {
+      console.log('Email sent')
+  })
+  .catch((error) => {
+      console.error(error)
+  })
+}
+
+
+// used to read database, see when to leave based on Azure Maps API data and send email to user  
+module.exports = async function (context, myTimer) {
+  var timeStamp = new Date().toISOString();
+  let dateNow = new Date();
+  
+  if (myTimer.isPastDue)
+  {
+      context.log('JavaScript is running late!');
+  }
+  context.log('JavaScript timer trigger function ran!', timeStamp);  
     
+  // will get all items in container
+  let allItems = await getAllItems();
 
-    // const sgMail = require('@sendgrid/mail')
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-    // const msg = {
-    // to: 'saniazehra2@gmail.com', // Change to your recipient
-    // from: 'saniazkhaja@gmail.com', // Change to your verified sender
-    // subject: 'Sending with SendGrid is Fun',
-    // text: 'and easy to do anywhere, even with Node.js',
-    // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    // }
-    // sgMail
-    // .send(msg)
-    // .then(() => {
-    //     console.log('Email sent')
-    // })
-    // .catch((error) => {
-    //     console.error(error)
-    // })
+  
+  // will go through each item and see whether it is time to send a notification
+  for (let i = 1; i < allItems.length; i++) {
+    let calculatedLeaveTime = getLeaveTime(allItems[i].userCurrentLat, allItems[i].userCurrentLong, 
+                                          allItems[i].userLocationLat, allItems[i].userLocationLong,
+                                          allItems[i].userEventDateTime, allItems[i].userParkingTime);
+    let dateCalculated = new Date(calculatedLeaveTime);
+
+    if (dateNow.getTime() > dateCalculated.getTime()) {
+      console.log(dateNow.toString() + ' is more recent than ' + dateCalculated.toString());
+    } else {
+      console.log(dateNow.toString() + ' is less recent than ' + dateCalculated.toString());
+    }
+    // check and see if leave time and currentTime difference is 5 minute difference or userNoticationTime difference
+    // if so, then call sendEmail function with email paramter, leavetime and arrive time
+    // sendEmail(allItems.userEmail, calculatedLeaveTime, allItems.userEventDateTime);
+  }  
 };
-
-// module.exports = function (context, input) {
-//     var message = {
-//         "personalizations": [ { "to": [ { "email": "sample@sample.com" } ] } ],
-//         from: { email: "sender@contoso.com" },
-//         subject: "Azure news",
-//         content: [{
-//             type: 'text/plain',
-//             value: input
-//         }]
-//     };
-
-//     return message;
-// };
-
-
-// // using Twilio SendGrid's v3 Node.js Library
-// // https://github.com/sendgrid/sendgrid-nodejs
-// javascript
-// const sgMail = require('@sendgrid/mail')
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-// const msg = {
-//   to: 'test@example.com', // Change to your recipient
-//   from: 'saniazkhaja@gmail.com', // Change to your verified sender
-//   subject: 'Sending with SendGrid is Fun',
-//   text: 'and easy to do anywhere, even with Node.js',
-//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-// }
-// sgMail
-//   .send(msg)
-//   .then(() => {
-//     console.log('Email sent')
-//   })
-//   .catch((error) => {
-//     console.error(error)
-//   })
