@@ -54,7 +54,7 @@ async function getAllItems(email) {
 }
 
 
-async function getLeaveTime(userCurrentLat, userCurrentLong, userLocationLat, userLocationLong, userEventDateTime, userParkingTime) {
+async function getLeaveTime(userCurrentLat, userCurrentLong, userLocationLat, userLocationLong, userDateTime, userParkingTime) {
   let departure = 0;
   let arrival = 0;
   let calculatedLeaveTime = 0;
@@ -71,14 +71,13 @@ async function getLeaveTime(userCurrentLat, userCurrentLong, userLocationLat, us
       departure = theMapData.routes[0].summary.departureTime;
       arrival = theMapData.routes[0].summary.arrivalTime;
 
-      context.log(departure);
-      context.log(arrival);
+      console.log(departure);
+      console.log(arrival);
     }).catch((error) => {
       console.error('Error:', error.message);
   });
 
-  // return calculatedLeaveTime;
-  return departure;
+  return calculatedLeaveTime;
 }
 
 
@@ -90,8 +89,7 @@ function sendEmail(userEmail, leaveTime, arriveTime) {
     to: userEmail, // Change to your recipient
     from: 'saniazkhaja@gmail.com', // Change to your verified sender
     subject: 'Time To Leave For Your Event Soon',
-    text: 'You will want to leave by' + leaveTime,
-    html: '<strong>to reach your event at</strong>' + arriveTime,
+    html: 'You will want to leave by ' + leaveTime + '<strong> to reach your event at </strong>' + arriveTime,
   }
   sgMail
   .send(msg)
@@ -121,9 +119,9 @@ module.exports = async function (context, myTimer) {
   
   // will go through each item and see whether it is time to send a notification
   for (let i = 1; i < allItems.length; i++) {
-    let calculatedLeaveTime = getLeaveTime(allItems[i].userCurrentLat, allItems[i].userCurrentLong, 
+    let calculatedLeaveTime = await getLeaveTime(allItems[i].userCurrentLat, allItems[i].userCurrentLong, 
                                           allItems[i].userLocationLat, allItems[i].userLocationLong,
-                                          allItems[i].userEventDateTime, allItems[i].userParkingTime);
+                                          allItems[i].userDateTime, allItems[i].userParkingTime);
     let dateCalculated = new Date(calculatedLeaveTime);
 
     if (dateNow.getTime() > dateCalculated.getTime()) {
@@ -132,7 +130,7 @@ module.exports = async function (context, myTimer) {
       console.log(dateNow.toString() + ' is less recent than ' + dateCalculated.toString());
     }
     // check and see if leave time and currentTime difference is 5 minute difference or userNoticationTime difference
-    // if so, then call sendEmail function with email paramter, leavetime and arrive time
-    // sendEmail(allItems.userEmail, calculatedLeaveTime, allItems.userEventDateTime);
+    // Calls sendEmail function with email parameter, leave time and arrive time. Used for notification purposes
+    sendEmail(allItems[i].userEmail, calculatedLeaveTime, allItems[i].userDateTime);
   }  
 };
