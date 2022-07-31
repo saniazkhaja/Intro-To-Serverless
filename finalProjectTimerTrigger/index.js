@@ -54,10 +54,13 @@ async function getAllItems(email) {
 }
 
 
+// Calculates what time the user should leave from home based on event time and parking time needed
 async function getLeaveTime(userCurrentLat, userCurrentLong, userLocationLat, userLocationLong, userDateTime, userParkingTime) {
   let departure = 0;
   let arrival = 0;
   let calculatedLeaveTime = 0;
+
+  // getting traffic data from azure maps
   await fetch('https://atlas.microsoft.com/route/directions/json?api-version=1.0&query='+userCurrentLat+','+userCurrentLong+':'+userLocationLat+','+userLocationLong+'&subscription-key='+process.env["AZURE_MAPS_API_KEY"], {
     method: 'GET',
     redirect: 'follow',
