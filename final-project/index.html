@@ -15,6 +15,7 @@
       font-size: 25px;
     } 
 
+    /* submit text style */
     .submitText {
       padding: 1px;
       text-align: center;
@@ -23,6 +24,7 @@
       font-size: 18px;
     } 
 
+    /* user's input style */
     .userInput {
       padding: 10px;
       text-align: left;
@@ -31,6 +33,7 @@
       font-size: 20px;
     } 
 
+    /* submit button style */
     .submitButton {
       padding: 5px;
       text-align: center;
@@ -38,18 +41,17 @@
       color: rgb(0, 17, 255);
       font-size: 25px;
     }
-
     .submitButton:hover {
       background-color: #ffffff;
     }
 
+    /* input box style */
     input[type=text] {
         width: 100%;
         padding: 12px 20px;
         margin: 8px 0;
         box-sizing: border-box;
     }
-
     </style>
 </head>
 <body>
@@ -57,34 +59,66 @@
         <h1>When To Leave For An Event: User Info</h1>
     </div>
 
+    <script>
+      // used for getting user's current location and saves it to a label
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          document.getElementById("userCurrentLat").innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+      
+      function showPosition(position) {
+        document.getElementById("userCurrentLat").innerHTML = position.coords.latitude;
+        document.getElementById("userCurrentLong").innerHTML = position.coords.longitude;
+      }
+      </script>
+
     <div class = "userInput">
         <form>
+            <label>Email</label> <br />
+            <input onclick="getLocation()" type="text" id="userEmail" placeholder="Email" required="required"></input>
             <br />
-            <label>Gmail Email</label> <br />
-            <input type="text" id="userGmail" placeholder="Gmail" required="required"></input>
+            <br />
+
+            <label> Current Location Latitude: </label>
+            <label id="userCurrentLat"></label>
+            <br />
+            <label> Current Location Longitude: </label>
+            <label id="userCurrentLong"></label>
             <br />
             <br />
-            <label>Location You Leave From (Street Name and Number, Town, State with Zip Code)</label> <br />
+
+            <label>Event Location (Street Name and Number, Town, State with Zip Code)</label> <br />
             <a href="https://www.latlong.net/convert-address-to-lat-long.html">Click To Find Out Latitude and Longitude of Location</a>
             <br />
-            <input type="text" id="userLocationLat" placeholder="Latitude" required="required"></input>
-            <input type="text" id="userLocationLong" placeholder="Longitude" required="required"></input>
+            <input onclick="getLocation()" type="text" id="userLocationLat" placeholder="Latitude" required="required"></input>
+            <input onclick="getLocation()" type="text" id="userLocationLong" placeholder="Longitude" required="required"></input>
             <br />
             <br />
+
+            <label>Event Date and Time (ex: 2022-07-29T18:00:00)</label>
+            <input type="text" id="userDateTime" placeholder="Date and Time" required="required"></input>
+            <br />
+            <br />
+
             <label>Amount Of Time To Leave For Parking (in minutes)</label> 
             <br />
             <input type="text" id="userParkingTime" placeholder="Parking Time" required="required"></input>
             <br />
             <br />
+
             <label>How Many Minutes Do You Want To Be Notified in Advance? (Will automatically notify 5 minutes before)</label> 
             <input type="text" id="userNotificationTime" placeholder="Notification Time" required="required"></input>
             <br />
             <br />
+            
             <div class ="submitText">
               <label id="submittedText"></label>
             </div>
             <br />
-            <button type="button" class=submitButton id="userSubmitButton">Submit</button>
+            <button type="button" class=submitButton id="userSubmitButton" >Submit</button>
         </form>
     </div>
     
