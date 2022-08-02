@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
     /* header style */
     .header {
@@ -76,7 +77,7 @@
       </script>
 
     <div class = "userInput">
-        <form>
+        <form id="userForm">
             <label>Email</label> <br />
             <input onclick="getLocation()" type="text" id="userEmail" placeholder="Email" required="required"></input>
             <br />
@@ -98,8 +99,8 @@
             <br />
             <br />
 
-            <label>Event Date and Time (ex: 2022-07-29T18:00:00)</label>
-            <input type="text" id="userDateTime" placeholder="Date and Time" required="required"></input>
+            <label>Event Date and Time:  </label>
+            <input type="datetime-local" id="userDateTime" placeholder="Date and Time" required="required"></input>
             <br />
             <br />
 
@@ -113,15 +114,16 @@
             <input type="text" id="userNotificationTime" placeholder="Notification Time" required="required"></input>
             <br />
             <br />
-            
-            <div class ="submitText">
-              <label id="submittedText"></label>
+
+            <div class="alert alert-success d-none" id="submittedText">
+              Your form successfully submitted!
             </div>
             <br />
-            <button type="button" class=submitButton id="userSubmitButton" >Submit</button>
+            <button type="submit" class="btn btn-primary" id="userSubmitButton" >Submit</button>
         </form>
     </div>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="./index1.js"></script>
 </body>
 </html>

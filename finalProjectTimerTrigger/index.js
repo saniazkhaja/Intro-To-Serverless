@@ -61,7 +61,7 @@ async function getLeaveTime(email, userCurrentLat, userCurrentLong, userLocation
   let calculatedLeaveTime = 0;
   let travelTime = 0;
   let currentTime = new Date();
-  let userEventTime = new Date(userDateTime + 'Z');
+  let userEventTime = new Date(userDateTime);
   console.log("USer event time " + userEventTime.toString());
   console.log("USer event time " + userEventTime.getTime());
 
@@ -146,7 +146,7 @@ module.exports = async function (context, myTimer) {
   let allItems = await getAllItems();
   
   // will go through each item and see whether it is time to send a notification
-  for (let i = 1; i < allItems.length; i++) {
+  for (let i = 0; i < allItems.length; i++) {
     let calculatedLeaveTime = await getLeaveTime(allItems[i].userEmail,allItems[i].userCurrentLat, allItems[i].userCurrentLong, 
                                           allItems[i].userLocationLat, allItems[i].userLocationLong,
                                           allItems[i].userDateTime, allItems[i].userParkingTime, allItems[i].userNotificationTime);

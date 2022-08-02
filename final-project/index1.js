@@ -1,7 +1,8 @@
-const userSubmitButton = document.getElementById("userSubmitButton");
+const form = document.getElementById("userForm");
 
 // runs when submit button is clicked
-userSubmitButton.addEventListener("click", async function() {
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
   // used to get all user inputs ans store those values in variables
   let userEmail = document.getElementById("userEmail").value;
   let userCurrentLat = document.getElementById("userCurrentLat").innerText;
@@ -26,7 +27,7 @@ userSubmitButton.addEventListener("click", async function() {
                       "userCurrentLong": userCurrentLong,
                       "userLocationLat": userLocationLat,
                       "userLocationLong": userLocationLong,
-                      "userDateTime": userDateTime,
+                      "userDateTime": moment(userDateTime).format(),
                       "userParkingTime": userParkingTime,
                       "userNotificationTime": userNotificationTime
                       })
@@ -44,4 +45,5 @@ document.getElementById("userDateTime").value = "";
 document.getElementById("userParkingTime").value = "";
 document.getElementById("userNotificationTime").value = "";
 document.getElementById("submittedText").innerHTML = "Your form successfully submitted!";
+document.getElementById("submittedText").classList.remove("d-none");
 });
