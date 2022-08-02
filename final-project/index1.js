@@ -14,7 +14,7 @@ form.addEventListener("submit", async function(event) {
   let userDateTime = document.getElementById("userDateTime").value;
 
   // used to get request and responses from HTML page. Converts user input into JSON data
-  fetch("http://localhost:7071/api/final-project",
+  fetch("https://ambitious-sea-0a236af10.1.azurestaticapps.net/",
   {
   headers: {
     'Accept': 'application/json',
