@@ -54,11 +54,16 @@ async function getAllItems(email) {
 }
 
 
-// Calculates what time the user should leave from home based on event time and parking time needed
-async function getLeaveTime(userCurrentLat, userCurrentLong, userLocationLat, userLocationLong, userDateTime, userParkingTime) {
+// Calculates what time the user should leave from home based on event time and parking time needed and used to know when to notify user
+async function getLeaveTime(email, userCurrentLat, userCurrentLong, userLocationLat, userLocationLong, userDateTime, userParkingTime, userNoticationTime) {
   let departure = 0;
   let arrival = 0;
   let calculatedLeaveTime = 0;
+  let travelTime = 0;
+  let currentTime = new Date();
+  let userEventTime = new Date(userDateTime + 'Z');
+  console.log("USer event time " + userEventTime.toString());
+  console.log("USer event time " + userEventTime.getTime());
 
   // getting traffic data from azure maps
   await fetch('https://atlas.microsoft.com/route/directions/json?api-version=1.0&query='+userCurrentLat+','+userCurrentLong+':'+userLocationLat+','+userLocationLong+'&subscription-key='+process.env["AZURE_MAPS_API_KEY"], {
@@ -73,12 +78,33 @@ async function getLeaveTime(userCurrentLat, userCurrentLong, userLocationLat, us
     .then((theMapData) => {
       departure = theMapData.routes[0].summary.departureTime;
       arrival = theMapData.routes[0].summary.arrivalTime;
+      travelTime = theMapData.routes[0].summary.travelTimeInSeconds;
 
       console.log(departure);
       console.log(arrival);
+      console.log("Travel Timeeeee: " + travelTime);
     }).catch((error) => {
       console.error('Error:', error.message);
   });
+
+  // parking time and notification time in milliseconds
+  let parkingTimeMs = (parseInt(userParkingTime) * 60) * 1000;
+  let notificationTimeMs = (parseInt(userNoticationTime) * 60) * 1000;
+  console.log("ParkingTime: " + parkingTimeMs + " Notifcation: " + notificationTimeMs);
+
+  // figuring out how many milliseconds there is from notification time to arrival time
+  let timeNeededBeforeArrival = currentTime.getTime() + parkingTimeMs + notificationTimeMs + (travelTime * 1000);
+  console.log("Time needed in MS: " + timeNeededBeforeArrival);
+  
+  // used to figure out whether to send user the email notification yet
+  if (timeNeededBeforeArrival < userEventTime.getTime() && timeNeededBeforeArrival > userEventTime.getTime() - 5000) {
+    calculatedLeaveTime = new Date(userEventTime.getTime() - (travelTime * 1000) - parkingTimeMs);
+    sendEmail(email, calculatedLeaveTime, userDateTime);
+  }
+  else if (currentTime.getTime() + parkingTimeMs + (travelTime * 1000) < userEventTime.getTime() && currentTime.getTime() + parkingTimeMs + (travelTime * 1000) > userEventTime - 5000) {
+    calculatedLeaveTime = new Date(userEventTime.getTime() - (travelTime * 1000) - parkingTimeMs);
+    sendEmail(email, calculatedLeaveTime, userDateTime);
+  }
 
   return calculatedLeaveTime;
 }
@@ -118,22 +144,11 @@ module.exports = async function (context, myTimer) {
     
   // will get all items in container
   let allItems = await getAllItems();
-
   
   // will go through each item and see whether it is time to send a notification
   for (let i = 1; i < allItems.length; i++) {
-    let calculatedLeaveTime = await getLeaveTime(allItems[i].userCurrentLat, allItems[i].userCurrentLong, 
+    let calculatedLeaveTime = await getLeaveTime(allItems[i].userEmail,allItems[i].userCurrentLat, allItems[i].userCurrentLong, 
                                           allItems[i].userLocationLat, allItems[i].userLocationLong,
-                                          allItems[i].userDateTime, allItems[i].userParkingTime);
-    let dateCalculated = new Date(calculatedLeaveTime);
-
-    if (dateNow.getTime() > dateCalculated.getTime()) {
-      console.log(dateNow.toString() + ' is more recent than ' + dateCalculated.toString());
-    } else {
-      console.log(dateNow.toString() + ' is less recent than ' + dateCalculated.toString());
-    }
-    // check and see if leave time and currentTime difference is 5 minute difference or userNoticationTime difference
-    // Calls sendEmail function with email parameter, leave time and arrive time. Used for notification purposes
-    sendEmail(allItems[i].userEmail, calculatedLeaveTime, allItems[i].userDateTime);
+                                          allItems[i].userDateTime, allItems[i].userParkingTime, allItems[i].userNotificationTime);
   }  
 };
