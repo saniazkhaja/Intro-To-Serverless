@@ -96,12 +96,12 @@ async function getLeaveTime(email, userCurrentLat, userCurrentLong, userLocation
   let timeNeededBeforeArrival = currentTime.getTime() + parkingTimeMs + notificationTimeMs + (travelTime * 1000);
   console.log("Time needed in MS: " + timeNeededBeforeArrival);
   
-  // used to figure out whether to send user the email notification yet
-  if (timeNeededBeforeArrival < userEventTime.getTime() && timeNeededBeforeArrival > userEventTime.getTime() - 5000) {
+  // used to figure out whether to send user the email notification yet. in milliseconds
+  if (timeNeededBeforeArrival < userEventTime.getTime() && timeNeededBeforeArrival > userEventTime.getTime() - 300000) {
     calculatedLeaveTime = new Date(userEventTime.getTime() - (travelTime * 1000) - parkingTimeMs);
     sendEmail(email, calculatedLeaveTime, userDateTime);
   }
-  else if (currentTime.getTime() + parkingTimeMs + (travelTime * 1000) < userEventTime.getTime() && currentTime.getTime() + parkingTimeMs + (travelTime * 1000) > userEventTime - 5000) {
+  else if (currentTime.getTime() + parkingTimeMs + (travelTime * 1000) < userEventTime.getTime() && currentTime.getTime() + parkingTimeMs + (travelTime * 1000) > userEventTime - 300000) {
     calculatedLeaveTime = new Date(userEventTime.getTime() - (travelTime * 1000) - parkingTimeMs);
     sendEmail(email, calculatedLeaveTime, userDateTime);
   }
