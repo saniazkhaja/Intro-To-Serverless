@@ -56,14 +56,14 @@ async function getAllItems(email) {
 
 // Calculates what time the user should leave from home based on event time and parking time needed and used to know when to notify user
 async function getLeaveTime(email, userCurrentLat, userCurrentLong, userLocationLat, userLocationLong, userDateTime, userParkingTime, userNoticationTime) {
-  let departure = 0;
-  let arrival = 0;
   let calculatedLeaveTime = 0;
   let travelTime = 0;
   let currentTime = new Date();
   let userEventTime = new Date(userDateTime);
-  console.log("USer event time " + userEventTime.toString());
-  console.log("USer event time " + userEventTime.getTime());
+  console.log("Current time: " + currentTime.toString());
+  console.log("Current time in MS: " + currentTime.getTime());
+  console.log("User event time: " + userEventTime.toString());
+  console.log("User event time in MS:" + userEventTime.getTime());
 
   // getting traffic data from azure maps
   await fetch('https://atlas.microsoft.com/route/directions/json?api-version=1.0&query='+userCurrentLat+','+userCurrentLong+':'+userLocationLat+','+userLocationLong+'&subscription-key='+process.env["AZURE_MAPS_API_KEY"], {
@@ -76,13 +76,9 @@ async function getLeaveTime(email, userCurrentLat, userCurrentLong, userLocation
   })  
     .then((response) => response.json())
     .then((theMapData) => {
-      departure = theMapData.routes[0].summary.departureTime;
-      arrival = theMapData.routes[0].summary.arrivalTime;
       travelTime = theMapData.routes[0].summary.travelTimeInSeconds;
 
-      console.log(departure);
-      console.log(arrival);
-      console.log("Travel Timeeeee: " + travelTime);
+      console.log("Travel Time: " + travelTime);
     }).catch((error) => {
       console.error('Error:', error.message);
   });
@@ -90,20 +86,24 @@ async function getLeaveTime(email, userCurrentLat, userCurrentLong, userLocation
   // parking time and notification time in milliseconds
   let parkingTimeMs = (parseInt(userParkingTime) * 60) * 1000;
   let notificationTimeMs = (parseInt(userNoticationTime) * 60) * 1000;
-  console.log("ParkingTime: " + parkingTimeMs + " Notifcation: " + notificationTimeMs);
+  console.log("ParkingTime in MS: " + parkingTimeMs + " Notification in MS: " + notificationTimeMs);
 
-  // figuring out how many milliseconds there is from notification time to arrival time
-  let timeNeededBeforeArrival = currentTime.getTime() + parkingTimeMs + notificationTimeMs + (travelTime * 1000);
-  console.log("Time needed in MS: " + timeNeededBeforeArrival);
-  
-  // used to figure out whether to send user the email notification yet. in milliseconds
-  if (timeNeededBeforeArrival < userEventTime.getTime() && timeNeededBeforeArrival > userEventTime.getTime() - 300000) {
+  // calculates time needed before notification
+  let timeNeeded = parkingTimeMs + notificationTimeMs + (travelTime * 1000);
+  let defaultTimeNeeded = parkingTimeMs + (travelTime * 1000);
+  let timeToEvent = (userEventTime.getTime() - currentTime.getTime());
+  console.log("Time Needed in MS: " + timeNeeded);
+  console.log("Time To Event in MS: " + timeToEvent);
+
+  // checking to see if it is time to notify the user when to leave
+  if (timeToEvent - timeNeeded <= 300000 && timeToEvent - timeNeeded > 0) {
+    console.log ("Notifying user1");
     calculatedLeaveTime = new Date(userEventTime.getTime() - (travelTime * 1000) - parkingTimeMs);
-    sendEmail(email, calculatedLeaveTime, userDateTime);
-  }
-  else if (currentTime.getTime() + parkingTimeMs + (travelTime * 1000) < userEventTime.getTime() && currentTime.getTime() + parkingTimeMs + (travelTime * 1000) > userEventTime - 300000) {
+    sendEmail(email, calculatedLeaveTime, userEventTime);
+  } else if (timeToEvent - defaultTimeNeeded <= 300000 && timeToEvent - defaultTimeNeeded > 0) {
+    console.log ("Notifying user2");
     calculatedLeaveTime = new Date(userEventTime.getTime() - (travelTime * 1000) - parkingTimeMs);
-    sendEmail(email, calculatedLeaveTime, userDateTime);
+    sendEmail(email, calculatedLeaveTime, userEventTime);
   }
 
   return calculatedLeaveTime;
@@ -134,19 +134,13 @@ function sendEmail(userEmail, leaveTime, arriveTime) {
 // used to read database, see when to leave based on Azure Maps API data and send email to user  
 module.exports = async function (context, myTimer) {
   var timeStamp = new Date().toISOString();
-  let dateNow = new Date();
-  
-  if (myTimer.isPastDue)
-  {
-      context.log('JavaScript is running late!');
-  }
-  context.log('JavaScript timer trigger function ran!', timeStamp);  
     
   // will get all items in container
   let allItems = await getAllItems();
   
   // will go through each item and see whether it is time to send a notification
   for (let i = 0; i < allItems.length; i++) {
+    console.log(" ");
     let calculatedLeaveTime = await getLeaveTime(allItems[i].userEmail,allItems[i].userCurrentLat, allItems[i].userCurrentLong, 
                                           allItems[i].userLocationLat, allItems[i].userLocationLong,
                                           allItems[i].userDateTime, allItems[i].userParkingTime, allItems[i].userNotificationTime);

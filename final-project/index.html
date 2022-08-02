@@ -9,48 +9,41 @@
     <style>
     /* header style */
     .header {
-      padding: 1px;
+      padding: 15px;
       text-align: center;
-      background: rgb(107, 196, 255);
-      color: rgb(0, 17, 255);
+      background: rgb(19, 109, 245);
+      color: rgb(255, 255, 255);
+      font-family: "Times New Roman", Times, serif;
       font-size: 25px;
-    } 
-
-    /* submit text style */
-    .submitText {
-      padding: 1px;
-      text-align: center;
-      background: rgb(107, 196, 255);
-      color: rgb(0, 17, 255);
-      font-size: 18px;
+      font-weight: bolder;
     } 
 
     /* user's input style */
     .userInput {
-      padding: 10px;
-      text-align: left;
+      padding: 20px;
+      text-align: center;
+      font-family: "Times New Roman", Times, serif;
       background: rgb(256, 256, 256);
       color: rgb(0, 0, 0);
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: bold;
     } 
 
-    /* submit button style */
-    .submitButton {
-      padding: 5px;
+    .userLocation {
+      padding: 0px;
       text-align: center;
-      background: rgb(107, 196, 255);
-      color: rgb(0, 17, 255);
-      font-size: 25px;
-    }
-    .submitButton:hover {
-      background-color: #ffffff;
+      font-family: "Times New Roman", Times, serif;
+      background: rgb(256, 256, 256);
+      color: rgb(0, 0, 0);
+      font-size: 18px;
+      font-weight: normal;
     }
 
     /* input box style */
     input[type=text] {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
+        width: 50%;
+        padding: 12px 15px;
+        margin: 1px 0;
         box-sizing: border-box;
     }
     </style>
@@ -79,28 +72,30 @@
     <div class = "userInput">
         <form id="userForm">
             <label>Email</label> <br />
-            <input onclick="getLocation()" type="text" id="userEmail" placeholder="Email" required="required"></input>
+            <input onclick=getLocation() type="text" id="userEmail" placeholder="Email" required="required"></input>
             <br />
             <br />
 
-            <label> Current Location Latitude: </label>
-            <label id="userCurrentLat"></label>
+            <label> Current Location (Latitude, Longitude): </label>
+            <div class="userLocation">
+              <label> (</label>
+              <label id="userCurrentLat"></label>
+              <label> , </label>
+              <label id="userCurrentLong"></label>
+              <label> )</label>
+            </div>
             <br />
-            <label> Current Location Longitude: </label>
-            <label id="userCurrentLong"></label>
+
+            <label>Event Location Address</label>
+            <a href="https://www.latlong.net/convert-address-to-lat-long.html"> (Click To Find Out Latitude and Longitude of Location)</a>
+            <br />
+            <input onclick="getLocation()" type="text" id="userLocationLat" placeholder="Latitude" required="required" style="width: 25%;"></input>
+            <input onclick="getLocation()" type="text" id="userLocationLong" placeholder="Longitude" required="required" style="width: 25%;"></input>
             <br />
             <br />
 
-            <label>Event Location (Street Name and Number, Town, State with Zip Code)</label> <br />
-            <a href="https://www.latlong.net/convert-address-to-lat-long.html">Click To Find Out Latitude and Longitude of Location</a>
-            <br />
-            <input onclick="getLocation()" type="text" id="userLocationLat" placeholder="Latitude" required="required"></input>
-            <input onclick="getLocation()" type="text" id="userLocationLong" placeholder="Longitude" required="required"></input>
-            <br />
-            <br />
-
-            <label>Event Date and Time:  </label>
-            <input type="datetime-local" id="userDateTime" placeholder="Date and Time" required="required"></input>
+            <label>Event Date and Time:  </label> <br />
+            <input type="datetime-local" id="userDateTime" placeholder="Date and Time" required="required" style="width: 50%;"></input>
             <br />
             <br />
 
@@ -110,7 +105,7 @@
             <br />
             <br />
 
-            <label>How Many Minutes Do You Want To Be Notified in Advance? (Will automatically notify 5 minutes before)</label> 
+            <label>Minutes You Want To Be Notified in Advance? (Notifies 5 minutes before)</label> <br />
             <input type="text" id="userNotificationTime" placeholder="Notification Time" required="required"></input>
             <br />
             <br />
@@ -118,7 +113,7 @@
             <div class="alert alert-success d-none" id="submittedText">
               Your form successfully submitted!
             </div>
-            <br />
+           
             <button type="submit" class="btn btn-primary" id="userSubmitButton" >Submit</button>
         </form>
     </div>
