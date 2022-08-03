@@ -7,8 +7,9 @@ form.addEventListener("submit", async function(event) {
   let userEmail = document.getElementById("userEmail").value;
   let userCurrentLat = document.getElementById("userCurrentLat").innerText;
   let userCurrentLong = document.getElementById("userCurrentLong").innerText;
-  let userLocationLat = document.getElementById("userLocationLat").value;
-  let userLocationLong = document.getElementById("userLocationLong").value;
+  // let userLocationLat = document.getElementById("userLocationLat").value;
+  // let userLocationLong = document.getElementById("userLocationLong").value;
+  let userEventLocation = document.getElementById("userEventLocation").value;
   let userParkingTime = document.getElementById("userParkingTime").value;
   let userNotificationTime = document.getElementById("userNotificationTime").value;
   let userDateTime = document.getElementById("userDateTime").value;
@@ -25,8 +26,9 @@ form.addEventListener("submit", async function(event) {
                       "userEmail": userEmail,
                       "userCurrentLat": userCurrentLat,
                       "userCurrentLong": userCurrentLong,
-                      "userLocationLat": userLocationLat,
-                      "userLocationLong": userLocationLong,
+                      // "userLocationLat": userLocationLat,
+                      // "userLocationLong": userLocationLong,
+                      "userEventLocation": userEventLocation,
                       "userDateTime": moment(userDateTime).format(),
                       "userParkingTime": userParkingTime,
                       "userNotificationTime": userNotificationTime
@@ -39,8 +41,9 @@ form.addEventListener("submit", async function(event) {
 document.getElementById("userEmail").value = "";
 document.getElementById("userCurrentLat").innerHTML = "";
 document.getElementById("userCurrentLong").innerHTML = "";
-document.getElementById("userLocationLat").value = "";
-document.getElementById("userLocationLong").value = "";
+// document.getElementById("userLocationLat").value = "";
+// document.getElementById("userLocationLong").value = "";
+document.getElementById("userEventLocation").value = "";
 document.getElementById("userDateTime").value = "";
 document.getElementById("userParkingTime").value = "";
 document.getElementById("userNotificationTime").value = "";

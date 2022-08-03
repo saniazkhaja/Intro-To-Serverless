@@ -77,7 +77,6 @@ async function getLeaveTime(email, userCurrentLat, userCurrentLong, userLocation
     .then((response) => response.json())
     .then((theMapData) => {
       travelTime = theMapData.routes[0].summary.travelTimeInSeconds;
-
       console.log("Travel Time: " + travelTime);
     }).catch((error) => {
       console.error('Error:', error.message);

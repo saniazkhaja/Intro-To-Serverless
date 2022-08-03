@@ -1,4 +1,5 @@
 const CosmosClient = require("@azure/cosmos").CosmosClient;
+const fetch = require('node-fetch');
 
 const config = {
   endpoint: process.env["COSMOS_ENDPOINT"],
@@ -100,7 +101,7 @@ async function updateItem(data, email) {
     ]
   };
   
-    // read all items in the Items container
+  // read all items in the Items container
   const { resources: items } = await container.items
   .query(querySpec)
   .fetchAll();
@@ -124,11 +125,31 @@ async function updateItem(data, email) {
 // gets user input and updates or creates a new item
 module.exports = async function (context, req) {
   const data = req.body; // this is the user's input
+  let userLocationLat;
+  let userLocationLong;
+  await fetch('https://atlas.microsoft.com/search/address/json?&subscription-key='+process.env["AZURE_MAPS_API_KEY"]+'&api-version=1.0&language=en-US&query='+data.userEventLocation, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    method: "GET",
+  }) 
+  .then((response) => response.json())
+    .then((theMapData) => {
+      userLocationLat = theMapData.results[1].position.lat;
+      userLocationLong = theMapData.results[1].position.lon;
+      console.log("userLocationLat: " + userLocationLat);
+      console.log("userLocationLong: " + userLocationLong);
+    }).catch((error) => {
+      console.error('Error:', error.message);
+  });
+
   let document = {"userEmail": data.userEmail, 
                   "userCurrentLat": data.userCurrentLat,
                   "userCurrentLong": data.userCurrentLong,
-                  "userLocationLat": data.userLocationLat,
-                  "userLocationLong": data.userLocationLong,
+                  "userLocationLat": userLocationLat,
+                  "userLocationLong": userLocationLong,
                   "userDateTime": data.userDateTime,
                   "userParkingTime": data.userParkingTime,
                   "userNotificationTime": data.userNotificationTime,
