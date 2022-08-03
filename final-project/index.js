@@ -137,8 +137,8 @@ module.exports = async function (context, req) {
   }) 
   .then((response) => response.json())
     .then((theMapData) => {
-      userLocationLat = JSON.stringify(theMapData.results[1].position.lat);
-      userLocationLong = JSON.stringify(theMapData.results[1].position.lon);
+      userLocationLat = theMapData.results[1].position.lat;
+      userLocationLong = theMapData.results[1].position.lon;
       console.log("userLocationLat: " + userLocationLat);
       console.log("userLocationLong: " + userLocationLong);
     }).catch((error) => {
