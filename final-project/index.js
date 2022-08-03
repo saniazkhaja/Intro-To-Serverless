@@ -84,7 +84,7 @@ async function getItems(email) {
 
 
 // used to update an item if that email had already existed in the system
-async function updateItem(data, email) {
+async function updateItem(data, email, userLocationLat, userLocationLong) {
   const { endpoint, key, databaseId, containerId } = config;
   const client = new CosmosClient({ endpoint, key });
   const database = client.database(databaseId);
@@ -110,8 +110,8 @@ async function updateItem(data, email) {
   const { id, category } = items[0];
   items[0].userCurrentLat = data.userCurrentLat;
   items[0].userCurrentLong = data.userCurrentLong;
-  items[0].userLocationLat = data.userLocationLat;
-  items[0].userLocationLong = data.userLocationLong;
+  items[0].userLocationLat = userLocationLat;
+  items[0].userLocationLong = userLocationLong;
   items[0].userDateTime = data.userDateTime;
   items[0].userParkingTime = data.userParkingTime;
   items[0].userNotificationTime = data.userNotificationTime;
@@ -162,7 +162,7 @@ module.exports = async function (context, req) {
   if (currentItems.length == 0) {
       let items = await createDocument(document)
   } else {
-      updateItem(data, data.userEmail);
+      updateItem(data, data.userEmail, userLocationLat, userLocationLong);
   }
 
   const responseMessage = `Thanks! Stored your info "${JSON.stringify(data.userEmail)}"`
