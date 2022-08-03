@@ -127,6 +127,8 @@ module.exports = async function (context, req) {
   const data = req.body; // this is the user's input
   let userLocationLat = 0;
   let userLocationLong = 0;
+
+  // using user event address to get a latitude and longitude
   await fetch('https://atlas.microsoft.com/search/address/json?&subscription-key='+process.env["AZURE_MAPS_API_KEY"]+'&api-version=1.0&language=en-US&query='+data.userEventLocation, {
     headers: {
       'Accept': 'application/json',
