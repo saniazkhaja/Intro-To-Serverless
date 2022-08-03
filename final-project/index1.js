@@ -7,8 +7,6 @@ form.addEventListener("submit", async function(event) {
   let userEmail = document.getElementById("userEmail").value;
   let userCurrentLat = document.getElementById("userCurrentLat").innerText;
   let userCurrentLong = document.getElementById("userCurrentLong").innerText;
-  // let userLocationLat = document.getElementById("userLocationLat").value;
-  // let userLocationLong = document.getElementById("userLocationLong").value;
   let userEventLocation = document.getElementById("userEventLocation").value;
   let userParkingTime = document.getElementById("userParkingTime").value;
   let userNotificationTime = document.getElementById("userNotificationTime").value;
@@ -26,8 +24,6 @@ form.addEventListener("submit", async function(event) {
                       "userEmail": userEmail,
                       "userCurrentLat": userCurrentLat,
                       "userCurrentLong": userCurrentLong,
-                      // "userLocationLat": userLocationLat,
-                      // "userLocationLong": userLocationLong,
                       "userEventLocation": userEventLocation,
                       "userDateTime": moment(userDateTime).format(),
                       "userParkingTime": userParkingTime,

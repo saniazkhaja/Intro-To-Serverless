@@ -125,8 +125,8 @@ async function updateItem(data, email, userLocationLat, userLocationLong) {
 // gets user input and updates or creates a new item
 module.exports = async function (context, req) {
   const data = req.body; // this is the user's input
-  let userLocationLat;
-  let userLocationLong;
+  let userLocationLat = 0;
+  let userLocationLong = 0;
   await fetch('https://atlas.microsoft.com/search/address/json?&subscription-key='+process.env["AZURE_MAPS_API_KEY"]+'&api-version=1.0&language=en-US&query='+data.userEventLocation, {
     headers: {
       'Accept': 'application/json',
