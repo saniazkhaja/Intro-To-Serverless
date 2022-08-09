@@ -4,44 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Event Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
     /* header style */
     .header {
-      padding: 1px;
+      padding: 15px;
       text-align: center;
-      background: rgb(107, 196, 255);
-      color: rgb(0, 17, 255);
+      background: rgb(19, 109, 245);
+      color: rgb(255, 255, 255);
+      font-family: "Times New Roman", Times, serif;
       font-size: 25px;
+      font-weight: bolder;
     } 
 
+    /* user's input style */
     .userInput {
-      padding: 10px;
-      text-align: left;
+      padding: 20px;
+      text-align: center;
+      font-family: "Times New Roman", Times, serif;
       background: rgb(256, 256, 256);
       color: rgb(0, 0, 0);
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: bold;
     } 
 
-    .submitButton {
-      padding: 5px;
+    .userLocation {
+      padding: 0px;
       text-align: center;
-      background: rgb(107, 196, 255);
-      color: rgb(0, 17, 255);
-      font-size: 25px;
+      font-family: "Times New Roman", Times, serif;
+      background: rgb(256, 256, 256);
+      color: rgb(0, 0, 0);
+      font-size: 18px;
+      font-weight: normal;
     }
 
-    .submitButton:hover {
-      background-color: #ffffff;
-    }
-
+    /* input box style */
     input[type=text] {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
+        width: 50%;
+        padding: 12px 15px;
+        margin: 1px 0;
         box-sizing: border-box;
     }
-
     </style>
 </head>
 <body>
@@ -49,32 +53,70 @@
         <h1>When To Leave For An Event: User Info</h1>
     </div>
 
+    <script>
+      // used for getting user's current location and saves it to a label
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          document.getElementById("userCurrentLat").innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+      
+      function showPosition(position) {
+        document.getElementById("userCurrentLat").innerHTML = position.coords.latitude;
+        document.getElementById("userCurrentLong").innerHTML = position.coords.longitude;
+      }
+      </script>
+
     <div class = "userInput">
-        <form>
-            <br />
-            <label>Gmail Email</label> <br />
-            <input type="text" id="userGmail" placeholder="Gmail"></input>
-            <br />
-            <br />
-            <label>Location You Leave From (Street Name and Number, Town, State with Zip Code)</label> 
-            <br />
-            <input type="text" id="userLocation" placeholder="Location"></input>
+        <form id="userForm">
+            <label>Email</label> <br />
+            <input onclick=getLocation() type="text" id="userEmail" placeholder="Email" required="required"></input>
             <br />
             <br />
+
+            <label> Current Location (Latitude, Longitude): </label>
+            <div class="userLocation">
+              <label> (</label>
+              <label id="userCurrentLat"></label>
+              <label> , </label>
+              <label id="userCurrentLong"></label>
+              <label> )</label>
+            </div>
+            <br />
+
+            <label>Event Address (Street Number and Name, City, State with Zip Code)</label>
+            <br />
+            <input onclick="getLocation()" type="text" id="userEventLocation" placeholder="Event Address" required="required"></input>
+            <br />
+            <br />
+
+            <label>Event Date and Time:  </label> <br />
+            <input type="datetime-local" id="userDateTime" placeholder="Date and Time" required="required" style="width: 50%;"></input>
+            <br />
+            <br />
+
             <label>Amount Of Time To Leave For Parking (in minutes)</label> 
             <br />
-            <input type="text" id="userParkingTime" placeholder="Parking Time"></input>
+            <input type="text" id="userParkingTime" placeholder="Parking Time" required="required"></input>
             <br />
             <br />
-            <label>How Many Minutes Do You Want To Be Notified in Advance? (Will automatically notify 5 minutes before)</label> 
-            <input type="text" id="userNotificationTime" placeholder="Notification Time"></input>
+
+            <label>Minutes You Want To Be Notified in Advance? (Notifies 5 minutes before)</label> <br />
+            <input type="text" id="userNotificationTime" placeholder="Notification Time" required="required"></input>
             <br />
             <br />
-            <br />
+
+            <div class="alert alert-success d-none" id="submittedText">
+              Your form successfully submitted!
+            </div>
+           
+            <button type="submit" class="btn btn-primary" id="userSubmitButton" >Submit</button>
         </form>
-        <button class=submitButton id="userSubmitButton">Submit</button>
     </div>
     
-    <script src="./index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="./index1.js"></script>
 </body>
 </html>

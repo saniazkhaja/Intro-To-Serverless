@@ -1,7 +1,7 @@
 {
   "bindings": [
     {
-      "authLevel": "function",
+      "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
@@ -14,6 +14,14 @@
       "type": "http",
       "direction": "out",
       "name": "res"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "out",
+      "name": "secrets",
+      "databaseName": "saniabitproject2022",
+      "collectionName": "SecretStorer",
+      "connectionStringSetting": "AccountEndpoint=https://saniabitproject2022.documents.azure.com:443/;AccountKey=he9zfpynIgyTsxYlYws2M4IrF9pt9LG3gJqWBQk5h48pCTkTFvZpyZZDERiWkADDdbT9KvUL6uLKX64HVI7gRg==;"
     }
   ]
 }
