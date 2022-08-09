@@ -37,8 +37,6 @@ form.addEventListener("submit", async function(event) {
 document.getElementById("userEmail").value = "";
 document.getElementById("userCurrentLat").innerHTML = "";
 document.getElementById("userCurrentLong").innerHTML = "";
-// document.getElementById("userLocationLat").value = "";
-// document.getElementById("userLocationLong").value = "";
 document.getElementById("userEventLocation").value = "";
 document.getElementById("userDateTime").value = "";
 document.getElementById("userParkingTime").value = "";
